@@ -28,7 +28,7 @@ class Authorizer {
     public function addRole($role)
     {
         $this->doesRoleExist($role);
-        $this->user->roles()->attach($this->config->get('authorizer.' . $role));
+        $this->user->roles()->attach($this->config->get('authorizer.' . $role, false));
     }
 
     /**
@@ -39,7 +39,7 @@ class Authorizer {
     public function removeRole($role)
     {
         $this->doesRoleExist($role);
-        $this->user->roles()->detach($this->config->get('authorizer.' . $role));
+        $this->user->roles()->detach($this->config->get('authorizer.' . $role, false));
     }
 
     /**
@@ -51,8 +51,8 @@ class Authorizer {
     public function is($role)
     {
         $this->doesRoleExist($role);
-        return in_array($role, $this->arrayFetch($this->user->roles()->toArray(), 'name'));
-        // return in_array($role, array_fetch($this->user->roles->toArray(), 'name'));
+        $roles = $this->user->roles()->get();
+        return in_array($role, $this->arrayFetch($roles->toArray(), 'name'));
     }
 
     /**
