@@ -2,8 +2,6 @@
 
 use \Mockery as m;
 use Berg\Authorizer\Authorizer;
-// use Berg\Authorizer\LaravelLogger;
-// use Berg\Authorizer\LaravelConfig;
 
 class AuthorizerTest extends PHPUnit_Framework_TestCase {
     protected $logger;
