@@ -12,6 +12,7 @@ class AuthorizerTest extends PHPUnit_Framework_TestCase {
         $this->logger = m::mock('Berg\Authorizer\LaravelLogger');
         $this->config = m::mock('Berg\Authorizer\LaravelConfig');
         $this->user = m::mock('User')->shouldDeferMissing();
+
         $this->authorizer = new Authorizer($this->logger, $this->config);
     }
 
@@ -64,6 +65,7 @@ class AuthorizerTest extends PHPUnit_Framework_TestCase {
 
         $this->authorizer->init($this->user);
         $this->user->shouldReceive('roles')->once()->andReturn($this->user);
+        $this->user->shouldReceive('get')->once()->andReturn($this->user);
         $this->user->shouldReceive('toArray')->once()->andReturn($roles);
         $this->config->shouldReceive('get')->andReturn(true);
 
@@ -77,6 +79,7 @@ class AuthorizerTest extends PHPUnit_Framework_TestCase {
 
         $this->authorizer->init($this->user);
         $this->user->shouldReceive('roles')->once()->andReturn($this->user);
+        $this->user->shouldReceive('get')->once()->andReturn($this->user);
         $this->user->shouldReceive('toArray')->once()->andReturn($roles);
         $this->config->shouldReceive('get')->andReturn(true);
 
@@ -84,45 +87,48 @@ class AuthorizerTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($result);
     }
 
-    public function testAuthorizeModelAdmin()
+    public function testHasAccessToForAdmin()
     {
         $roles = array(array('name' => 'admin'));
         $this->authorizer->init($this->user);
         $this->user->shouldReceive('roles')->once()->andReturn($this->user);
+        $this->user->shouldReceive('get')->once()->andReturn($this->user);
         $this->user->shouldReceive('toArray')->once()->andReturn($roles);
         $this->config->shouldReceive('get')->andReturn(true);
 
-        $result = $this->authorizer->authorizeModel('modelName', 1);
+        $result = $this->authorizer->hasAccessTo('modelName', 1);
         $this->assertTrue($result);
     }
 
-    public function testAuthorizeModelNotAdmin()
+    public function testHasAccessToForNotAdmin()
     {
         $roles = array(array('name' => 'notAdmin'));
         $this->authorizer->init($this->user);
         $this->user->shouldReceive('roles')->once()->andReturn($this->user);
+        $this->user->shouldReceive('get')->once()->andReturn($this->user);
         $this->user->shouldReceive('toArray')->once()->andReturn($roles);
         $this->config->shouldReceive('get')->andReturn(true);
 
         $testModel = m::mock('testModel');
         $testModel->shouldReceive('authorize')->once()->andReturn(true);
 
-        $result = $this->authorizer->authorizeModel($testModel, 1);
+        $result = $this->authorizer->hasAccessTo($testModel, 1);
         $this->assertTrue($result);
     }
 
-    public function testAuthorizeModelNotAdminFails()
+    public function testHasAccessToForNotAdminFails()
     {
         $roles = array(array('name' => 'notAdmin'));
         $this->authorizer->init($this->user);
         $this->user->shouldReceive('roles')->once()->andReturn($this->user);
+        $this->user->shouldReceive('get')->once()->andReturn($this->user);
         $this->user->shouldReceive('toArray')->once()->andReturn($roles);
         $this->config->shouldReceive('get')->andReturn(true);
 
         $testModel = m::mock('testModel');
         $testModel->shouldReceive('authorize')->once()->andReturn(false);
 
-        $result = $this->authorizer->authorizeModel($testModel, 1);
+        $result = $this->authorizer->hasAccessTo($testModel, 1);
         $this->assertFalse($result);
     }
 

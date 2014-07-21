@@ -11,5 +11,5 @@ interface AuthorizerInterface {
     public function addRole($typeString);
     public function removeRole($typeString);
     public function is($typeString);
-    public function authorizeModel($modelName, $modelId);
+    public function hasAccessTo($modelName, $modelId);
 }

@@ -62,7 +62,7 @@ class Authorizer {
      * @param int
      * @return boolean
      */
-    public function authorizeModel($model, $id)
+    public function hasAccessTo($model, $id)
     {
         if (!$id || $this->is('admin')) return true;
 
@@ -86,6 +86,9 @@ class Authorizer {
 
     /**
      * Copied from Laravel source
+     * @param $array
+     * @param $key
+     * @return array
      */
     private function arrayFetch($array, $key)
     {
