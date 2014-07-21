@@ -3,9 +3,9 @@
  * @author Matt Berg, 2014
  */
 
-use Illuminate\Support\Facades\Config;
-
 namespace Berg\Authorizer;
+
+use Illuminate\Support\Facades\Config;
 
 class LaravelConfig implements ConfigInterface {
 
